@@ -221,7 +221,7 @@ AnimatorController:
   - m_Name: MaxSpeed
     m_Type: 3
     m_DefaultFloat: 0
-    m_DefaultInt: 20
+    m_DefaultInt: 18
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   m_AnimatorLayers:

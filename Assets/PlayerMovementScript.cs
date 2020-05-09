@@ -32,7 +32,7 @@ public class PlayerMovementScript : MonoBehaviour
     {        
         // Debug.Log("collided and hasJumped is " + hasJumped);
         Vector2 velocity = person.GetComponent<Rigidbody2D>().velocity;
-        Debug.Log("player y velocity is " + velocity.y);
+        // Debug.Log("player y velocity is " + velocity.y);
 
         //left and right movement
         if(Input.GetAxisRaw("Horizontal") == -1 &&  player.GetFloat("Speed") >= -player.GetInteger("MaxSpeed")){
