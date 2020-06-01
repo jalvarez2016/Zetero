@@ -15,10 +15,30 @@ public class PlayerMovementScript : MonoBehaviour
     {
         hasJumped = false;
         player.SetBool("up", false);
+        player.SetBool("attack", false);
         if (other.gameObject.name.Contains("Enemy"))
         {
             Debug.Log("enemy hit you");
                 hasJumped= true;
+        }
+        if(player.GetBool("attack")){
+            if (other.gameObject.tag == "Enemy")
+            {
+                Debug.Log("Attacking enemy");
+                Destroy(other.gameObject);
+            } else if(other.gameObject.tag == "Button")
+            {
+                Debug.Log("Button Hit!");
+            }
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D other){        
+        if(player.GetBool("attack")){
+            if (other.gameObject.tag == "Enemy")
+            {
+                //damage enemy
+            }
         }
     }
     // Start is called before the first frame update
@@ -65,6 +85,12 @@ public class PlayerMovementScript : MonoBehaviour
             player.SetBool("down", true);
         } else if(Input.GetAxisRaw("Vertical") != -1){
             player.SetBool("down", false);
+        }
+
+        //attacking
+        if(Input.GetKeyDown(KeyCode.Space) && hasJumped){
+            Debug.Log("attack");
+            player.SetBool("attack", true);
         }
 
         //correcting jumping error
