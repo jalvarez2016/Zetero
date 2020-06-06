@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovementScript : MonoBehaviour
 {
@@ -10,41 +11,88 @@ public class PlayerMovementScript : MonoBehaviour
     public Vector3 jumpForce;
     public GameObject person;
     public Animator player;
+    public Rigidbody2D playerRigid;
+    public AudioSource Attack;
+    public AudioSource Hit;
+    public AudioSource Complete;
+    public AudioSource Pickup;
+    public AudioSource Jump;
+
+    public void AttackFX(){
+        Attack.Play();
+    }
+
+    public void HitFX(){
+        Hit.Play();
+    }
+
+    public void CompleteFX(){
+        Complete.Play();
+    }
+
+    public void PickupFX(){
+        Pickup.Play();
+    }
+
+    public void JumpFX(){
+        Jump.Play();
+    }
 
     void OnCollisionEnter2D(Collision2D other)
     {
         hasJumped = false;
         player.SetBool("up", false);
-        player.SetBool("attack", false);
-        if (other.gameObject.name.Contains("Enemy"))
+        if (other.gameObject.tag == "Enemy" && !player.GetBool("attack"))
         {
             Debug.Log("enemy hit you");
-                hasJumped= true;
+            hasJumped= true;
+            HitFX();
         }
         if(player.GetBool("attack")){
             if (other.gameObject.tag == "Enemy")
             {
-                Debug.Log("Attacking enemy");
+                // Debug.Log("Attacking enemy");
                 Destroy(other.gameObject);
             } else if(other.gameObject.tag == "Button")
             {
-                Debug.Log("Button Hit!");
+                // Debug.Log("Button Hit!");
+                CompleteFX();
+                Debug.Log(other.gameObject.name);
+                buttonPush(other.gameObject.name);
             }
         }
+        
+        player.SetBool("attack", false);
     }
 
     void OnCollisionExit2D(Collision2D other){        
         if(player.GetBool("attack")){
             if (other.gameObject.tag == "Enemy")
             {
+                Destroy(other.gameObject);
                 //damage enemy
             }
         }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+
+    public void buttonPush(string name){
+        if(name == "StartBtn"){
+            changeScene();
+        } else if(name == "InfoBtn"){
+            Debug.Log("Info Button pushed");
+        } else if(name == "VolumeBtn"){
+            Debug.Log("Volume button pushed");
+        }
+    }
+
+    public void changeScene(){
+        var scene = SceneManager.GetActiveScene();
+        Debug.Log("Active Scene is '" + scene.buildIndex + "'.");
+        // if(scene.buildIndex == 1){
+        //     canvas.SetActive(false);
+        //     video.GetComponent<VideoPlayer>.Play();
+        // }
+        SceneManager.LoadScene(scene.buildIndex + 1);
     }
 
     // Update is called once per frame
@@ -74,6 +122,9 @@ public class PlayerMovementScript : MonoBehaviour
         } else {
             player.SetBool("right", false);
             player.SetBool("idle", true);
+            Vector2 temp = new Vector2(0f,playerRigid.velocity.y);
+            playerRigid.velocity = temp;
+            
         }
 
         //jumping and crouching 
@@ -81,6 +132,7 @@ public class PlayerMovementScript : MonoBehaviour
             hasJumped = true;
             GetComponent<Rigidbody2D>().AddForce(jumpForce);
             player.SetBool("up", true);
+            JumpFX();
         } else if(Input.GetAxisRaw("Vertical") == -1){
             player.SetBool("down", true);
         } else if(Input.GetAxisRaw("Vertical") != -1){
@@ -89,6 +141,7 @@ public class PlayerMovementScript : MonoBehaviour
 
         //attacking
         if(Input.GetKeyDown(KeyCode.Space) && hasJumped){
+            AttackFX();
             Debug.Log("attack");
             player.SetBool("attack", true);
         }
