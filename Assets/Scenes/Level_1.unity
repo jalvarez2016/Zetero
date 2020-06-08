@@ -1134,11 +1134,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasJumped: 0
+  holding: 0
   leftMovement: {x: -12, y: 0, z: 0}
   rightMovement: {x: 12, y: 0, z: 0}
   jumpForce: {x: 0, y: 120, z: 0}
   person: {fileID: 1395325987}
   player: {fileID: 1395325989}
+  playerCollider: {fileID: 1395325991}
   playerRigid: {fileID: 1395325992}
   Attack: {fileID: 218341920}
   Hit: {fileID: 594133925}
@@ -1233,28 +1235,28 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 1459942106}
     m_ColliderPaths:
-    - - X: -69999900
-        Y: 199999959
-      - X: -69999900
-        Y: 210000041
-      - X: -69999959
-        Y: 210000100
-      - X: -80000041
-        Y: 210000100
-      - X: -80000100
-        Y: 210000041
-      - X: -80000100
-        Y: 199999959
-      - X: -80000041
-        Y: 199999900
-      - X: -69999959
-        Y: 199999900
+    - - X: -59687400
+        Y: 199687463
+      - X: -59687400
+        Y: 210312537
+      - X: -59687459
+        Y: 210312596
+      - X: -69687463
+        Y: 210312596
+      - X: -69687404
+        Y: 210312537
+      - X: -69687404
+        Y: 199687463
+      - X: -69687463
+        Y: 199687404
+      - X: -59687459
+        Y: 199687404
   m_CompositePaths:
     m_Paths:
-    - - {x: -7.0000257, y: 19.99999}
-      - {x: -7.0000257, y: 21.00001}
-      - {x: -8.00001, y: 20.999975}
-      - {x: -7.9999747, y: 19.99999}
+    - - {x: -5.9687753, y: 19.96874}
+      - {x: -5.9687753, y: 21.03126}
+      - {x: -6.968741, y: 21.031223}
+      - {x: -6.968717, y: 19.96874}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &1459942103
@@ -1318,7 +1320,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0.03125, y: 0.03125, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -1334,7 +1336,7 @@ Tilemap:
   m_GameObject: {fileID: 1459942100}
   m_Enabled: 1
   m_Tiles:
-  - first: {x: -8, y: 20, z: 0}
+  - first: {x: -7, y: 20, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 7
@@ -1360,7 +1362,7 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {fileID: 0}
   - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: a21842650849aff4fa42e5564d16f4d9, type: 2}
+    m_Data: {fileID: 11400000, guid: 52d65809832e54c4fa7dba2dc3345deb, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
@@ -1377,7 +1379,7 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {fileID: 0}
   - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 4c8e4b35af6b88c4782e13798e0226fb, type: 3}
+    m_Data: {fileID: 21300000, guid: b8f679bd528254e4a96d9509b207e1b2, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 1
     m_Data:

@@ -6,11 +6,13 @@ using UnityEngine.SceneManagement;
 public class PlayerMovementScript : MonoBehaviour
 {
     public bool hasJumped;
+    public bool holding;
     public Vector3 leftMovement;
     public Vector3 rightMovement;
     public Vector3 jumpForce;
     public GameObject person;
     public Animator player;
+    public BoxCollider2D playerCollider;
     public Rigidbody2D playerRigid;
     public AudioSource Attack;
     public AudioSource Hit;
@@ -103,7 +105,7 @@ public class PlayerMovementScript : MonoBehaviour
         // Debug.Log("player y velocity is " + velocity.y);
 
         //left and right movement
-        if(Input.GetAxisRaw("Horizontal") == -1 &&  player.GetFloat("Speed") >= -player.GetInteger("MaxSpeed")){
+        if(Input.GetAxisRaw("Horizontal") == -1 &&  player.GetFloat("Speed") >= -player.GetInteger("MaxSpeed") && !holding && !player.GetBool("down")){
             // Debug.Log(person.GetComponent<Rigidbody2D>().velocity);
             GetComponent<Rigidbody2D>().AddForce(leftMovement);
             player.SetBool("right",true);
@@ -111,7 +113,7 @@ public class PlayerMovementScript : MonoBehaviour
             player.SetBool("idle", false);
             var newSpeed = velocity.x;
             player.SetFloat("Speed", newSpeed)  ;
-        } else if(Input.GetAxisRaw("Horizontal") == 1 && player.GetFloat("Speed") <= player.GetInteger("MaxSpeed")){
+        } else if(Input.GetAxisRaw("Horizontal") == 1 && player.GetFloat("Speed") <= player.GetInteger("MaxSpeed") && !holding && !player.GetBool("down")){
             // Debug.Log(person.GetComponent<Rigidbody2D>().velocity);
             GetComponent<Rigidbody2D>().AddForce(rightMovement);
             player.SetBool("right", true);
@@ -135,8 +137,10 @@ public class PlayerMovementScript : MonoBehaviour
             JumpFX();
         } else if(Input.GetAxisRaw("Vertical") == -1){
             player.SetBool("down", true);
+            playerCollider.enabled = false;
         } else if(Input.GetAxisRaw("Vertical") != -1){
             player.SetBool("down", false);
+            playerCollider.enabled = true;
         }
 
         //attacking
@@ -145,6 +149,17 @@ public class PlayerMovementScript : MonoBehaviour
             Debug.Log("attack");
             player.SetBool("attack", true);
         }
+
+        //picking up and throwing
+        if(Input.GetKeyDown(KeyCode.C)){
+            //picking up logic for a nearby liftable block            
+            player.SetBool("Pickup", true);
+            holding = true;
+        } else if(Input.GetKeyDown(KeyCode.X) && player.GetBool("Pickup")){
+            //throwing the picked up box logic
+            player.SetBool("Pickup", false);
+            holding = false;
+        };
 
         //correcting jumping error
         if(velocity.y == 0){
