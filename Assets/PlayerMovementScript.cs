@@ -40,6 +40,14 @@ public class PlayerMovementScript : MonoBehaviour
         Jump.Play();
     }
 
+    void OnCollisionStay(Collision other)
+    {
+        if(other.gameObject.tag == "Liftable"){
+        // other.transform.position = transform.position;
+        }
+        
+    }
+
     void OnCollisionEnter2D(Collision2D other)
     {
         hasJumped = false;
