@@ -19,6 +19,8 @@ public class PlayerMovementScript : MonoBehaviour
     public AudioSource Complete;
     public AudioSource Pickup;
     public AudioSource Jump;
+    public GameObject carryingObj;
+    public Vector3 thowForce;
 
     public void AttackFX(){
         Attack.Play();
@@ -42,9 +44,8 @@ public class PlayerMovementScript : MonoBehaviour
 
     void OnCollisionStay(Collision other)
     {
-        if(other.gameObject.tag == "Liftable"){
-        // other.transform.position = transform.position;
-        }
+        Debug.Log(other.gameObject.tag);
+        
         
     }
 
@@ -71,19 +72,57 @@ public class PlayerMovementScript : MonoBehaviour
                 buttonPush(other.gameObject.name);
             }
         }
-        
+
         player.SetBool("attack", false);
     }
 
-    void OnCollisionExit2D(Collision2D other){        
-        if(player.GetBool("attack")){
-            if (other.gameObject.tag == "Enemy")
-            {
-                Destroy(other.gameObject);
-                //damage enemy
-            }
+    //pickup logic
+    void OnTriggerStay2D(Collider2D other)
+    {
+        // other.attachedRigidbody.AddForce(-0.1F * other.attachedRigidbody.velocity);        
+        if(player.GetBool("Pickup") && player.GetBool("Carrying")){
+            PickupBox(other.gameObject);
+        } else if(player.GetBool("Pickup") && !player.GetBool("Carrying")){
+            return;
         }
     }
+
+    void PickupBox(GameObject other){
+        
+            Debug.Log(other.gameObject.tag);
+            if(other.gameObject.tag == "Liftable"){
+                Debug.Log("pickn up boxes");
+                // other.transform.position = transform.position;
+                Vector3 box = other.transform.position;
+                box.y += 1.1f;
+                other.transform.position = box;
+                player.SetBool("Carrying", false);
+                other.GetComponent<Rigidbody2D>().gravityScale = 0f;
+                // other.rigidbody2D.gravityScale = 0.0f;
+                carryingObj = other.gameObject;
+            }
+    }
+        
+    void ThrowBox(){
+        player.SetBool("Pickup", false);
+        holding = false;
+        if(GameObject.Find("Player").GetComponent<SpriteRenderer>().flipX){
+            thowForce = -thowForce;
+        } else {
+            thowForce = new Vector3(10000f,1000f,0f);
+        }
+        carryingObj.GetComponent<Rigidbody2D>().AddForce(thowForce);
+        carryingObj.GetComponent<Rigidbody2D>().gravityScale = 10f;
+    }
+    // void OnCollisionExit2D(Collision2D other){        
+    //     if(player.GetBool("attack")){
+    //         if (other.gameObject.tag == "Enemy")
+    //         {
+    //             Destroy(other.gameObject);
+    //             //damage enemy
+    //         }
+    //     }
+    // }
 
     public void buttonPush(string name){
         if(name == "StartBtn"){
@@ -113,7 +152,7 @@ public class PlayerMovementScript : MonoBehaviour
         // Debug.Log("player y velocity is " + velocity.y);
 
         //left and right movement
-        if(Input.GetAxisRaw("Horizontal") == -1 &&  player.GetFloat("Speed") >= -player.GetInteger("MaxSpeed") && !holding && !player.GetBool("down")){
+        if(Input.GetAxisRaw("Horizontal") == -1 &&  player.GetFloat("Speed") >= -player.GetInteger("MaxSpeed") && !player.GetBool("down")){
             // Debug.Log(person.GetComponent<Rigidbody2D>().velocity);
             GetComponent<Rigidbody2D>().AddForce(leftMovement);
             player.SetBool("right",true);
@@ -121,7 +160,7 @@ public class PlayerMovementScript : MonoBehaviour
             player.SetBool("idle", false);
             var newSpeed = velocity.x;
             player.SetFloat("Speed", newSpeed)  ;
-        } else if(Input.GetAxisRaw("Horizontal") == 1 && player.GetFloat("Speed") <= player.GetInteger("MaxSpeed") && !holding && !player.GetBool("down")){
+        } else if(Input.GetAxisRaw("Horizontal") == 1 && player.GetFloat("Speed") <= player.GetInteger("MaxSpeed") && !player.GetBool("down")){
             // Debug.Log(person.GetComponent<Rigidbody2D>().velocity);
             GetComponent<Rigidbody2D>().AddForce(rightMovement);
             player.SetBool("right", true);
@@ -164,9 +203,9 @@ public class PlayerMovementScript : MonoBehaviour
             player.SetBool("Pickup", true);
             holding = true;
         } else if(Input.GetKeyDown(KeyCode.X) && player.GetBool("Pickup")){
-            //throwing the picked up box logic
-            player.SetBool("Pickup", false);
-            holding = false;
+            //throwing the picked up box logic            
+            player.SetBool("Carrying", true);
+            ThrowBox();
         };
 
         //correcting jumping error
