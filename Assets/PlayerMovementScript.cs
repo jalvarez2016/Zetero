@@ -9,6 +9,7 @@ public class PlayerMovementScript : MonoBehaviour
     public bool holding;
     public Vector3 leftMovement;
     public Vector3 rightMovement;
+    public Vector3 thowForce;
     public Vector3 jumpForce;
     public GameObject person;
     public Animator player;
@@ -20,7 +21,9 @@ public class PlayerMovementScript : MonoBehaviour
     public AudioSource Pickup;
     public AudioSource Jump;
     public GameObject carryingObj;
-    public Vector3 thowForce;
+    public SpriteRenderer sprite;
+    public float health;
+    public Color hurtColor;
 
     public void AttackFX(){
         Attack.Play();
@@ -57,6 +60,26 @@ public class PlayerMovementScript : MonoBehaviour
         {
             Debug.Log("enemy hit you");
             hasJumped= true;
+            health -= 1;
+            float redColor = 255f;
+            float greenColor = 0f;
+            float blueColor = 0f;
+            if(health == 2f)
+            {
+                greenColor = 150f;
+                blueColor =150f;
+            } else if( health == 1f)
+            {
+                greenColor = 100f;
+                blueColor =100f;
+            }
+            else {
+                //reload scene                
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            
+            hurtColor = new Color(redColor, greenColor, blueColor);
+            sprite.color = hurtColor;
             HitFX();
         }
         if(player.GetBool("attack")){
@@ -114,6 +137,7 @@ public class PlayerMovementScript : MonoBehaviour
         carryingObj.GetComponent<Rigidbody2D>().AddForce(thowForce);
         carryingObj.GetComponent<Rigidbody2D>().gravityScale = 10f;
     }
+
     // void OnCollisionExit2D(Collision2D other){        
     //     if(player.GetBool("attack")){
     //         if (other.gameObject.tag == "Enemy")

@@ -836,8 +836,8 @@ Camera:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.9528302, g: 0.7529412, b: 0.6864103, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1451,6 +1451,7 @@ MonoBehaviour:
   holding: 0
   leftMovement: {x: -7, y: 0, z: 0}
   rightMovement: {x: 7, y: 0, z: 0}
+  thowForce: {x: 10000, y: 0, z: 0}
   jumpForce: {x: 0, y: 120, z: 0}
   person: {fileID: 1395325987}
   player: {fileID: 1395325989}
@@ -1462,7 +1463,8 @@ MonoBehaviour:
   Pickup: {fileID: 287260160}
   Jump: {fileID: 703295144}
   carryingObj: {fileID: 0}
-  thowForce: {x: 10000, y: 0, z: 0}
+  sprite: {fileID: 1395325990}
+  newColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &1395325994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9478,7 +9480,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mooki: {fileID: 1703361696}
-  walkForce: {x: -5, y: 0}
+  player: {fileID: 1395325987}
+  walkForce: {x: -70, y: 40}
+  timer: 0
 --- !u!95 &1703361702
 Animator:
   serializedVersion: 3
