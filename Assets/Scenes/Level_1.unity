@@ -1464,7 +1464,8 @@ MonoBehaviour:
   Jump: {fileID: 703295144}
   carryingObj: {fileID: 0}
   sprite: {fileID: 1395325990}
-  newColor: {r: 1, g: 1, b: 1, a: 1}
+  health: 3
+  hurtColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!114 &1395325994
 MonoBehaviour:
   m_ObjectHideFlags: 0
