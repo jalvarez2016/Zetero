@@ -1465,7 +1465,7 @@ MonoBehaviour:
   carryingObj: {fileID: 0}
   sprite: {fileID: 1395325990}
   health: 3
-  hurtColor: {r: 1, g: 1, b: 1, a: 0}
+  hurtColor: {r: 1, g: 0.5235849, b: 0.5235849, a: 1}
 --- !u!114 &1395325994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9482,7 +9482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mooki: {fileID: 1703361696}
   player: {fileID: 1395325987}
-  walkForce: {x: -70, y: 40}
+  walkForce: {x: -70, y: 100}
   timer: 0
 --- !u!95 &1703361702
 Animator:

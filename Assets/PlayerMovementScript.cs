@@ -58,28 +58,17 @@ public class PlayerMovementScript : MonoBehaviour
         player.SetBool("up", false);
         if (other.gameObject.tag == "Enemy" && !player.GetBool("attack"))
         {
-            Debug.Log("enemy hit you");
             hasJumped= true;
             health -= 1;
-            float redColor = 255f;
-            float greenColor = 0f;
-            float blueColor = 0f;
             if(health == 2f)
             {
-                greenColor = 150f;
-                blueColor =150f;
-            } else if( health == 1f)
-            {
-                greenColor = 100f;
-                blueColor =100f;
-            }
-            else {
+                sprite.color = hurtColor;
+            } else if(health == 1f){
+                sprite.color = new Color(255f, 0f, 0f,  255f);
+            } else {
                 //reload scene                
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
-            
-            hurtColor = new Color(redColor, greenColor, blueColor);
-            sprite.color = hurtColor;
             HitFX();
         }
         if(player.GetBool("attack")){
@@ -116,11 +105,13 @@ public class PlayerMovementScript : MonoBehaviour
             if(other.gameObject.tag == "Liftable"){
                 Debug.Log("pickn up boxes");
                 // other.transform.position = transform.position;
-                Vector3 box = other.transform.position;
-                box.y += 1.1f;
-                other.transform.position = box;
+                // Vector3 box = other.transform.position;
+                // box.y += 1.1f;
+                // other.transform.position = box;
+                Vector2 pickupForce = new Vector2(0f, 750f);
                 player.SetBool("Carrying", false);
                 other.GetComponent<Rigidbody2D>().gravityScale = 0f;
+                other.GetComponent<Rigidbody2D>().AddForce(pickupForce);
                 // other.rigidbody2D.gravityScale = 0.0f;
                 carryingObj = other.gameObject;
             }
@@ -130,11 +121,11 @@ public class PlayerMovementScript : MonoBehaviour
         player.SetBool("Pickup", false);
         holding = false;
         if(GameObject.Find("Player").GetComponent<SpriteRenderer>().flipX){
-            thowForce = -thowForce;
+            carryingObj.GetComponent<Rigidbody2D>().AddForce(-thowForce);
         } else {
             thowForce = new Vector3(10000f,1000f,0f);
+            carryingObj.GetComponent<Rigidbody2D>().AddForce(thowForce);
         }
-        carryingObj.GetComponent<Rigidbody2D>().AddForce(thowForce);
         carryingObj.GetComponent<Rigidbody2D>().gravityScale = 10f;
     }
 
@@ -174,6 +165,12 @@ public class PlayerMovementScript : MonoBehaviour
         // Debug.Log("collided and hasJumped is " + hasJumped);
         Vector2 velocity = person.GetComponent<Rigidbody2D>().velocity;
         // Debug.Log("player y velocity is " + velocity.y);
+
+        //reset
+        if(Input.GetKeyDown(KeyCode.R)){
+            //reload scene                
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);            
+        }
 
         //left and right movement
         if(Input.GetAxisRaw("Horizontal") == -1 &&  player.GetFloat("Speed") >= -player.GetInteger("MaxSpeed") && !player.GetBool("down")){

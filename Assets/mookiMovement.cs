@@ -27,14 +27,16 @@ public class mookiMovement : MonoBehaviour
             Vector2 newWalk = walkForce;
             if(playerPos.x > enemyPos.x)
             {
-                newWalk = -walkForce;
-                if(GetComponent<SpriteRenderer>().flipX){
-                    GetComponent<SpriteRenderer>().flipX = false;
+                newWalk = new Vector2( -walkForce.x, walkForce.y);
+                if(!GetComponent<SpriteRenderer>().flipX){
+                    GetComponent<SpriteRenderer>().flipX = true;
                 }
-            }                
+            }        
+            else{
+                GetComponent<SpriteRenderer>().flipX = false;
+            }        
             if(velocity.x == 0){
                 GetComponent<Rigidbody2D>().AddForce(newWalk);
-                GetComponent<SpriteRenderer>().flipX = true;
             }
 
             timer = 2f;    

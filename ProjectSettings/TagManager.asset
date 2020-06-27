@@ -8,6 +8,10 @@ TagManager:
   - Button
   - Platform
   - Liftable
+  - Blocker
+  - Puzzle
+  - Start
+  - End
   layers:
   - Default
   - TransparentFX
